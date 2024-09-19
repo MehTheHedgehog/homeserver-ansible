@@ -1,6 +1,6 @@
 ---
 - name: Provision Ubuntu
-  hosts: localhost
+  hosts: servers
   tasks:
     - name: Test
       ansible.builtin.debug:
