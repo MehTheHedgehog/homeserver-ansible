@@ -6,21 +6,21 @@ on:
   workflow_dispatch:
 
 jobs:
-  provision:
-    - name: Run playbook
-      uses: dawidd6/action-ansible-playbook@v2
-      with:
-        # Required, playbook filepath
-        playbook: playbook.yml
-        # Optional, directory where playbooks live
-        directory: ./
-        # Optional, ansible configuration file content (ansible.cfg)
-        configuration: |
-          [defaults]
-          callbacks_enabled = ansible.posix.profile_tasks, ansible.posix.timer
-          stdout_callback = yaml
-          nocows = false
-        # Optional, SSH private key
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        # Optional, literal inventory file contents
-        inventory: ${{ secrets.HOSTS_YML }}
+  build:
+    name: Run playbook
+    uses: dawidd6/action-ansible-playbook@v2
+    with:
+      # Required, playbook filepath
+      playbook: playbook.yml
+      # Optional, directory where playbooks live
+      directory: ./
+      # Optional, ansible configuration file content (ansible.cfg)
+      configuration: |
+        [defaults]
+        callbacks_enabled = ansible.posix.profile_tasks, ansible.posix.timer
+        stdout_callback = yaml
+        nocows = false
+      # Optional, SSH private key
+      key: ${{ secrets.SSH_PRIVATE_KEY }}
+      # Optional, literal inventory file contents
+      inventory: ${{ secrets.HOSTS_YML }}
