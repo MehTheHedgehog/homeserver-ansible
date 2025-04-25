@@ -9,8 +9,6 @@
     - install
     - devsec.hardening.os_hardening
   vars:
-    user_packages:
-      - ufw
     install_user_net_scripts:
       - url: https://taskfile.dev/install.sh
         args: -b /usr/local/bin
