@@ -1,0 +1,4 @@
+*.retry
+.ansible_inventory
+.ansible_key
+.vscode

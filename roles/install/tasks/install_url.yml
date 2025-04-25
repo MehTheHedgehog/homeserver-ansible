@@ -1,0 +1,22 @@
+---
+- name: Check for command | {{ item.executable }}
+  ansible.builtin.command: which {{ item.executable }} >/dev/null 2>&1
+  register: installed
+  tags:
+    - skip_ansible_lint
+  ignore_errors: true
+
+- name: Download installer | {{ item.executable }}
+  ansible.builtin.get_url:
+    url: '{{ item.url }}'
+    dest: '/tmp/{{ item.url | urlsplit("hostname") }}-{{ item.url | urlsplit("path") | basename }}'
+    mode: '0744'
+  when: installed.rc != 0
+  register: download
+
+- name: Run the install script | {{ item.executable }}
+  ansible.builtin.command: '/tmp/{{ item.url | urlsplit("hostname") }}-{{ item.url | urlsplit("path") | basename }} {{ item.args }}'
+  when: download.changed
+  tags:
+    - skip_ansible_lint
+  become: true

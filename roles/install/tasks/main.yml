@@ -1,0 +1,35 @@
+---
+- name: Create keyring if it does not exists
+  when: install_user_packages is defined
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: '0755'
+
+- name: Install required system packages
+  when: install_user_packages is defined
+  ansible.builtin.apt:
+    name:
+      - ca-certificates
+    state: present
+    update_cache: true
+
+- name: Install signed apt repos
+  when: install_user_packages is defined
+  ansible.builtin.include_tasks:
+    file: install_sig_rep.yml
+  loop: '{{ [] + install_user_packages | default([]) | selectattr("key_url", "defined") | selectattr("apt_repo_url", "defined") }}'
+
+- name: Install user defined packages
+  when: install_user_packages is defined
+  ansible.builtin.apt:
+    update_cache: true
+    name: '{{ install_user_packages | default([]) | select("string") + install_user_packages | selectattr("pkg", "defined") | map(attribute="pkg") }}'
+    state: present
+    install_recommends: false
+
+- name: Install user defined scripts
+  when: install_user_net_scripts is defined
+  ansible.builtin.include_tasks:
+    file: install_url.yml
+  loop: "{{ install_user_net_scripts | default([]) }}"

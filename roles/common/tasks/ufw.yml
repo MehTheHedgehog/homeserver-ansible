@@ -1,0 +1,28 @@
+---
+- name: Install ufw package
+  ansible.builtin.apt:
+    name:
+      - ufw
+    state: present
+    update_cache: true
+
+- name: Rate limit ssh connections
+  community.general.ufw:
+    rule: limit
+    port: ssh
+    proto: tcp
+
+- name: Allow All outgoing traffic
+  community.general.ufw:
+    direction: outgoing
+    policy: allow
+
+- name: Deny all incoming traffic
+  community.general.ufw:
+    direction: incoming
+    policy: deny
+
+- name: Deny everything and enable UFW
+  community.general.ufw:
+    state: enabled
+    logging: 'on'

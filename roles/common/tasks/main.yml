@@ -1,0 +1,46 @@
+---
+# Common Role Tasks
+
+- name: Update and upgrade apt packages
+  ansible.builtin.apt:
+    update_cache: true
+    upgrade: dist
+    autoremove: true
+    autoclean: true
+
+- name: Install necessary packages
+  ansible.builtin.apt:
+    name:
+      - curl
+      - nano
+      - git
+      - sudo
+    state: present
+    update_cache: true
+
+- name: Set nano as the default editor for all users
+  ansible.builtin.lineinfile:
+    path: /etc/environment
+    regexp: '^EDITOR='
+    line: 'EDITOR=nano'
+    state: present
+
+- name: Set hostname
+  ansible.builtin.hostname:
+    name: "{{ hostname }}"
+
+- name: Set time and lang
+  ansible.builtin.include_tasks:
+    file: 'time-lang.yml'
+
+- name: UFW
+  ansible.builtin.include_tasks:
+    file: 'ufw.yml'
+
+- name: Logwatch
+  ansible.builtin.include_tasks:
+    file: 'logwatch.yml'
+
+- name: Docker
+  ansible.builtin.include_tasks:
+    file: 'docker.yml'

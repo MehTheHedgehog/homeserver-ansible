@@ -1,0 +1,11 @@
+[Unit]
+Description=Run logwatch weekly
+
+[Timer]
+OnBootSec=5m
+OnCalendar=Sun *-*-* 12:00:00
+Persistent=true
+Unit=logwatch.service
+
+[Install]
+WantedBy=timers.target

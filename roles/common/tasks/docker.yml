@@ -1,0 +1,31 @@
+---
+- name: Install docker
+  ansible.builtin.include_role:
+    name: install
+  vars:
+    install_user_packages:
+      - pkg: docker-ce
+        key_url: https://download.docker.com/linux/ubuntu/gpg
+        apt_repo_url: https://download.docker.com/linux/ubuntu {{ ansible_facts['distribution_release'] }} stable
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    install_user_net_scripts: []
+
+- name: Create docker group
+  ansible.builtin.group:
+    name: docker
+    state: present
+
+- name: Check for the docker service
+  ansible.builtin.systemd_service:
+    name: docker.service
+    state: started
+    enabled: true
+
+- name: Check for the containerd service
+  ansible.builtin.systemd_service:
+    name: containerd.service
+    state: started
+    enabled: true

@@ -1,0 +1,13 @@
+---
+- name: Download docker gpg key | {{ item.pkg }}
+  # https://askubuntu.com/a/1437410 - /etc/apt/keyrings for keyrings managed by the system operator
+  ansible.builtin.get_url:
+    url: "{{ item.key_url }}"
+    dest: /etc/apt/keyrings/{{ item.pkg }}
+    mode: "0644"
+
+- name: Add Repository | {{ item.pkg }}
+  ansible.builtin.apt_repository:
+    repo: deb [signed-by=/etc/apt/keyrings/{{ item.pkg }}] {{ item.apt_repo_url }}
+    state: present
+    mode: "0644"

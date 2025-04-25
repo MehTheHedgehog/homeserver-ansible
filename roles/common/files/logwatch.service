@@ -1,0 +1,6 @@
+[Unit]
+Description=Logwatch generate raport
+
+[Service]
+Type=oneshot
+ExecStart=sh -c 'logwatch | tee /tmp/logwatch.log'

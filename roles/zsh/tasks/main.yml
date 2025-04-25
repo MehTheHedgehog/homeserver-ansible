@@ -1,0 +1,24 @@
+---
+- name: Ensure Zsh with dependencies are installed
+  ansible.builtin.apt:
+    name:
+      - zsh
+      - fzf
+    state: present
+
+- name: Create .zshrc for root
+  ansible.builtin.copy:
+    src: .zshrc
+    dest: /root/.zshrc
+    owner: root
+    group: root
+    mode: '0700'
+
+- name: Create .zshrc for all users (with antigen config)
+  ansible.builtin.copy:
+    src: .zshrc
+    dest: /home/{{ item.name }}/.zshrc
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+    mode: '0700'
+  loop: "{{ l3d_users__local_users }}"

@@ -1,0 +1,33 @@
+---
+- name: Provision Ubuntu
+  hosts: servers
+  roles:
+    - common
+    - {role: l3d.users.user, tags: 'user'}
+    - zsh
+    - mikrus
+    - install
+    - devsec.hardening.os_hardening
+  vars:
+    user_packages:
+      - ufw
+    install_user_net_scripts:
+      - url: https://taskfile.dev/install.sh
+        args: -b /usr/local/bin
+        executable: task
+    logwatch_timer: "Sun *-*-* 13:00:00"
+    sysctl_overwrite:
+      # Enable IPv4 traffic forwarding.
+      net.ipv4.ip_forward: 1
+    os_auditd_enabled: false # Did not work on LXC containers
+    os_user_pw_ageing: false
+    l3d_users__local_users:
+      - name: 'ubuntu'
+        state: 'present'
+        shell: '/usr/bin/zsh'
+        admin_nopassword: true
+        create_home: true
+        admin: true
+        pubkeys: |
+          ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGCNN/zwue/9q935FDlKAS2xE+Ud9RDxYnVaUytW5W8s
+        exclusive_pubkeys: true
