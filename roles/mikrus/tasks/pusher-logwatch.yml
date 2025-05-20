@@ -1,0 +1,7 @@
+---
+- name: Add pusher to the logwatch service
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/system/logwatch.service
+    line: "ExecStart=sh -c 'cat /tmp/logwatch.html | pusher logwatch_weekly'"
+    state: present
+    insertafter: "(\bExecStart=\b)(?!.*[\r\n]*.*\\1)"

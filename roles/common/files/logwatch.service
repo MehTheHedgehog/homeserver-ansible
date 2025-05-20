@@ -3,4 +3,5 @@ Description=Logwatch generate raport
 
 [Service]
 Type=oneshot
-ExecStart=sh -c 'logwatch | tee /tmp/logwatch.log'
+ExecStart=sh -c 'logwatch --format text | tee /tmp/logwatch.log'
+ExecStart=sh -c 'logwatch --format html > /tmp/logwatch.html'

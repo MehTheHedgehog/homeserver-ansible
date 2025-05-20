@@ -4,6 +4,7 @@
     name:
       - nullmailer
       - logwatch
+      - libdate-manip-perl
     state: present
     install_recommends: false
 
