@@ -1,0 +1,15 @@
+---
+- name: Install pusher dependencies
+  ansible.builtin.apt:
+    name:
+      - curl
+    state: present
+    install_recommends: false
+
+- name: Download pusher script
+  ansible.builtin.get_url:
+    url: https://mikr.us/tools/pusher
+    dest: /usr/bin/pusher
+    owner: root
+    group: root
+    mode: "0755"

@@ -14,6 +14,7 @@
         args: -b /usr/local/bin
         executable: task
     logwatch_timer: "Sun *-*-* 13:00:00"
+    logwatch_range: "since -7 days"
     sysctl_overwrite:
       # Enable IPv4 traffic forwarding.
       net.ipv4.ip_forward: 1

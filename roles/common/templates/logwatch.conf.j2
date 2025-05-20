@@ -1,8 +1,13 @@
 LogDir = /var/log
 
 Output = stdout
-Format = text
+Format = html
 
-Range = All
+Range = {{ logwatch_range | default('since -7 days') }}
 Service = All
 Detail = Mid
+
+Service = "-stunnel"
+Service = "-sendmail"
+Service = "-amavis"
+Service = "-postfix"
